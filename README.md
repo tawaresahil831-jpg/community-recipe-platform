@@ -79,6 +79,7 @@ community-recipe-platform/
 │   ├── create.html        # Dynamic form (ingredients & steps adder/remover)
 │   └── recipe.html        # Recipe detail view (interactive checklist, numbered steps, like button)
 └── screenshots/           # Verification screenshots
+    ├── 00-hero-and-pillars.png
     ├── 01-explore-feed.png
     ├── 02-create-recipe-form.png
     ├── 03-recipe-detail.png
@@ -276,6 +277,12 @@ Add the following in your Render service's **Environment** tab:
 ---
 
 ## Screenshots
+
+### 0. Hero Banner & Inspiration Three Pillars
+"Unlock Your Inner Chef" culinary hero paired with the "Dinner Ideas & Beyond" three pillars section:
+![Hero & Pillars](screenshots/00-hero-and-pillars.png)
+
+---
 
 ### 1. Explore Feed
 Responsive card grid with search bar, category chips, prep times, and difficulty badges:

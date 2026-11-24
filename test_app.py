@@ -34,7 +34,8 @@ class TestCommunityRecipePlatform(unittest.TestCase):
         res = self.client.get("/")
         self.assertEqual(res.status_code, 200)
         self.assertIn(b"Community Recipe", res.data)
-        self.assertIn(b"Discover &amp; Share Everyday Recipes", res.data)
+        self.assertIn(b"Unlock Your", res.data)
+        self.assertIn(b"Inner Chef", res.data)
 
     def test_get_recipes_api_with_images(self):
         res = self.client.get("/api/recipes")

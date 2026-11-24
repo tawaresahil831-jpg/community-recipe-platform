@@ -3,18 +3,110 @@
 {% block title %}Explore Recipes - Community Recipe Platform{% endblock %}
 
 {% block content %}
-<div class="hero-section">
-    <div class="hero-content">
-        <h1 class="hero-title">Discover &amp; Share Everyday Recipes</h1>
-        <p class="hero-subtitle">Explore crowd-sourced recipes, filter by category or dietary choice, and search by title, cuisine, or ingredients.</p>
+<!-- Hero Banner: Unlock Your Inner Chef (Directly inspired by Reference) -->
+<section class="culinary-hero-card">
+    <div class="hero-grid">
+        <div class="hero-image-pane">
+            <img src="{{ url_for('static', filename='images/hero-skillet.jpg') }}" alt="Sizzling rustic skillet dish with herbs and lemon" class="hero-dish-img">
+            <div class="hero-dish-vignette"></div>
+        </div>
+        <div class="hero-text-pane">
+            <div class="hero-kicker-pill">
+                <span class="kicker-icon">🍳</span>
+                <span>Community Culinary Hub</span>
+            </div>
+            <h1 class="hero-display-title">Unlock Your<br>Inner Chef</h1>
+            <p class="hero-lead-text">
+                Learn new skills, master delicious recipes, and discover everyday culinary creations shared by our passionate cooking community.
+            </p>
+            <div class="hero-cta-group">
+                <a href="{{ url_for('create_recipe_page') }}" class="btn btn-hero-cta">+ Share a Recipe</a>
+                <a href="#explore-feed" class="btn btn-hero-secondary">Explore Recipes &darr;</a>
+            </div>
+            <div class="hero-metrics-strip">
+                <div class="metric-item">
+                    <span class="metric-val">9+</span>
+                    <span class="metric-lbl">Curated Recipes</span>
+                </div>
+                <div class="metric-sep"></div>
+                <div class="metric-item">
+                    <span class="metric-val">4</span>
+                    <span class="metric-lbl">Dietary Categories</span>
+                </div>
+                <div class="metric-sep"></div>
+                <div class="metric-item">
+                    <span class="metric-val">100%</span>
+                    <span class="metric-lbl">Free &amp; Open Source</span>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="hero-actions">
-        <a href="{{ url_for('create_recipe_page') }}" class="btn btn-primary btn-lg">+ Share Your Recipe</a>
+</section>
+
+<!-- Inspiration & Three Pillars Section (Directly inspired by Reference) -->
+<section class="culinary-pillars-section">
+    <div class="pillars-intro-row">
+        <div class="intro-heading-col">
+            <h2 class="pillars-headline">Dinner Ideas &amp; Inspiration</h2>
+        </div>
+        <div class="intro-desc-col">
+            <p class="pillars-subtext">
+                Providing you with the knowledge and inspiration you need to create memorable meals for yourself, your family, and your friends.
+            </p>
+        </div>
     </div>
-</div>
+
+    <!-- Black Feature Pillars Banner -->
+    <div class="pillars-dark-banner">
+        <div class="pillar-col">
+            <div class="pillar-icon-box">
+                <!-- Pot Icon -->
+                <svg class="pillar-svg-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor">
+                    <path d="M12 26C12 24 16 20 32 20C48 20 52 24 52 26" stroke-width="3" stroke-linecap="round"/>
+                    <rect x="14" y="26" width="36" height="24" rx="6" stroke-width="3" fill="rgba(255,255,255,0.06)"/>
+                    <path d="M8 29H14M50 29H56" stroke-width="3.5" stroke-linecap="round"/>
+                    <ellipse cx="32" cy="16" rx="4" ry="2.5" fill="currentColor"/>
+                    <line x1="20" y1="36" x2="44" y2="36" stroke-width="2" stroke-dasharray="3 3" stroke-opacity="0.5"/>
+                </svg>
+            </div>
+            <h3 class="pillar-name">Master Cooking Techniques</h3>
+            <p class="pillar-detail">Learn fundamental and advanced techniques with step-by-step interactive checklists and clear instructions.</p>
+        </div>
+
+        <div class="pillar-col">
+            <div class="pillar-icon-box">
+                <!-- Crossed Fork and Spoon Icon -->
+                <svg class="pillar-svg-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor">
+                    <path d="M16 48L42 18" stroke-width="3.5" stroke-linecap="round"/>
+                    <path d="M48 48L22 18" stroke-width="3.5" stroke-linecap="round"/>
+                    <ellipse cx="44" cy="15" rx="6" ry="8" transform="rotate(40 44 15)" fill="currentColor"/>
+                    <path d="M17 13L21 21M22 10L23 18M27 15L25 22" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M18 20C19 23 23 24 25 23" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h3 class="pillar-name">Expand Your Recipe Repertoire</h3>
+            <p class="pillar-detail">Discover a diverse range of delicious recipes spanning Breakfast, Lunch, Gourmet Desserts, and Plant-Based Vegan.</p>
+        </div>
+
+        <div class="pillar-col">
+            <div class="pillar-icon-box">
+                <!-- Chef Hat Icon -->
+                <svg class="pillar-svg-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor">
+                    <path d="M20 46H44V52H20V46Z" stroke-width="3" fill="rgba(255,255,255,0.1)"/>
+                    <path d="M20 46C15 44 13 36 17 30C15 22 22 16 30 18C32 14 38 14 41 17C48 14 53 22 50 30C54 36 52 44 44 46" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.06)"/>
+                    <line x1="26" y1="46" x2="26" y2="30" stroke-width="2" stroke-linecap="round" stroke-opacity="0.4"/>
+                    <line x1="32" y1="46" x2="32" y2="28" stroke-width="2" stroke-linecap="round" stroke-opacity="0.4"/>
+                    <line x1="38" y1="46" x2="38" y2="30" stroke-width="2" stroke-linecap="round" stroke-opacity="0.4"/>
+                </svg>
+            </div>
+            <h3 class="pillar-name">Gain Confidence in the Kitchen</h3>
+            <p class="pillar-detail">As you learn and practice, you'll be more comfortable, creative, and confident in every meal you prepare.</p>
+        </div>
+    </div>
+</section>
 
 <!-- Controls: Search Bar & Category Filter Chips -->
-<div class="controls-panel card">
+<div class="controls-panel card" id="explore-feed">
     <div class="search-box">
         <span class="search-icon">🔍</span>
         <input

@@ -35,12 +35,20 @@ def run():
         context = browser.new_context(viewport={"width": 1200, "height": 850})
         page = context.new_page()
 
-        # 1. Explore Feed
-        print("1. Capturing Explore Feed...")
+        # 1. Hero & Three Pillars (Reference Inspiration)
+        print("1. Capturing Hero & Three Pillars...")
         page.goto(f"{BASE_URL}/")
-        page.wait_for_selector(".recipe-card")
+        page.wait_for_selector(".culinary-hero-card")
         time.sleep(0.5)
 
+        screenshot_hero = os.path.join(SCREENSHOTS_DIR, "00-hero-and-pillars.png")
+        page.screenshot(path=screenshot_hero, full_page=False)
+        print(f"   Saved {screenshot_hero}")
+
+        # 1b. Explore Feed & Recipe Grid
+        print("1b. Capturing Explore Feed & Recipe Grid...")
+        page.evaluate("document.getElementById('explore-feed').scrollIntoView();")
+        time.sleep(0.4)
         screenshot1 = os.path.join(SCREENSHOTS_DIR, "01-explore-feed.png")
         page.screenshot(path=screenshot1, full_page=False)
         print(f"   Saved {screenshot1}")
