@@ -231,18 +231,37 @@ All API routes return JSON and are grouped under `/api`.
 
 ## Seed Data
 
-Running `python seed.py` provisions the database with 9 authentic sample recipes covering all four categories:
-1. *Avocado Toast with Poached Egg* (Breakfast, American, 15m, Easy)
-2. *Fluffy Blueberry Buttermilk Pancakes* (Breakfast, American, 25m, Easy)
-3. *Mediterranean Quinoa Power Bowl* (Lunch, Mediterranean, 25m, Easy)
-4. *Classic Margherita Pizza* (Lunch, Italian, 40m, Medium)
-5. *Creamy Tuscan Chicken Pasta* (Lunch, Italian, 30m, Medium)
-6. *Molten Chocolate Lava Cake* (Dessert, French, 25m, Hard)
-7. *Classic Italian Tiramisu* (Dessert, Italian, 35m, Medium)
-8. *Creamy Thai Coconut Chickpea Curry* (Vegan, Thai, 30m, Easy)
-9. *Crispy Baked Tofu Buddha Bowl* (Vegan, Asian Fusion, 35m, Medium)
+Running `python seed.py` provisions the database with 20 authentic, distinctive recipes covering all four categories (5 in each):
 
-The seed script checks for existing recipe titles before inserting, making it completely safe to run repeatedly without creating duplicates.
+#### 🥞 Breakfast
+1. *Avocado Toast with Poached Egg* (American, 15m, Easy)
+2. *Fluffy Blueberry Buttermilk Pancakes* (American, 25m, Easy)
+3. *Mediterranean Shakshuka with Feta* (Middle Eastern, 20m, Easy)
+4. *Classic French Rolled Herb Omelette* (French, 15m, Medium)
+5. *Golden Belgian Waffles with Fresh Berries* (Belgian, 25m, Easy)
+
+#### 🥗 Lunch
+6. *Mediterranean Quinoa Power Bowl* (Mediterranean, 25m, Easy)
+7. *Classic Margherita Pizza* (Italian, 40m, Medium)
+8. *Creamy Tuscan Chicken Pasta* (Italian, 30m, Medium)
+9. *Authentic Japanese Tonkotsu Ramen* (Japanese, 45m, Medium)
+10. *Mexican Street Corn Chicken Tacos* (Mexican, 25m, Easy)
+
+#### 🍰 Dessert
+11. *Molten Chocolate Lava Cake* (French, 25m, Hard)
+12. *Classic Italian Tiramisu* (Italian, 35m, Medium)
+13. *New York Strawberry Cheesecake* (American, 60m, Hard)
+14. *Japanese Matcha Green Tea Parfait* (Japanese, 20m, Medium)
+15. *Spanish Cinnamon Churros with Chocolate* (Spanish, 30m, Medium)
+
+#### 🌱 Vegan
+16. *Creamy Thai Coconut Chickpea Curry* (Thai, 30m, Easy)
+17. *Crispy Baked Tofu Buddha Bowl* (Asian Fusion, 35m, Medium)
+18. *North Indian Chana Masala with Naan* (Indian, 35m, Medium)
+19. *Roasted Butternut Squash & Sage Risotto* (Italian, 40m, Medium)
+20. *Fresh Vietnamese Summer Spring Rolls* (Vietnamese, 25m, Easy)
+
+Every single recipe has its own dedicated, high-resolution dish photo (`static/images/recipes/recipe_<id>.jpg`), avoiding duplicate visuals across the feed. The seed script checks for existing recipe titles before inserting, making it completely safe to run repeatedly without creating duplicates.
 
 ---
 

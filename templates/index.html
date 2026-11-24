@@ -7,7 +7,7 @@
 <section class="culinary-hero-card">
     <div class="hero-grid">
         <div class="hero-image-pane">
-            <img src="{{ url_for('static', filename='images/hero-skillet.jpg') }}" alt="Sizzling rustic skillet dish with herbs and lemon" class="hero-dish-img">
+            <img src="{{ url_for('static', filename='images/hero-culinary.jpg') }}" alt="Gourmet dish with fresh vibrant ingredients" class="hero-dish-img">
             <div class="hero-dish-vignette"></div>
         </div>
         <div class="hero-text-pane">
@@ -25,7 +25,7 @@
             </div>
             <div class="hero-metrics-strip">
                 <div class="metric-item">
-                    <span class="metric-val">9+</span>
+                    <span class="metric-val">20+</span>
                     <span class="metric-lbl">Curated Recipes</span>
                 </div>
                 <div class="metric-sep"></div>
@@ -153,7 +153,7 @@
         {% for recipe in recipes %}
         <div class="recipe-card" data-recipe-id="{{ recipe.id }}">
             <div class="recipe-card-cover">
-                <img src="{{ (recipe.primary_ingredient or recipe.title)|ingredient_image }}" alt="{{ recipe.title }}" loading="lazy">
+                <img src="{{ recipe|recipe_image }}" alt="{{ recipe.title }}" loading="lazy">
             </div>
             <div class="recipe-card-body">
                 <div class="recipe-card-header">

@@ -7,33 +7,40 @@
     <!-- Header Card -->
     <div class="recipe-header-card">
         <a href="{{ url_for('index') }}" class="back-link">&larr; Back to all recipes</a>
-        <div class="recipe-header-badges">
-            <span class="category-tag tag-{{ recipe.category|lower }}">{{ recipe.category }}</span>
-            <span class="difficulty-badge difficulty-{{ recipe.difficulty|lower }}">{{ recipe.difficulty }}</span>
-        </div>
-        <h1 class="recipe-title-main">{{ recipe.title }}</h1>
-        <div class="recipe-meta-row">
-            <span class="meta-item">🌍 <strong>{{ recipe.cuisine }}</strong> Cuisine</span>
-            <span class="meta-separator">&bull;</span>
-            <span class="meta-item">⏱️ <strong>{{ recipe.prep_time }}</strong> minutes prep</span>
-            <span class="meta-separator">&bull;</span>
-            <span class="meta-item">📅 {{ recipe.created_at|format_date }}</span>
-        </div>
+        <div class="recipe-detail-hero-layout">
+            <div class="recipe-detail-meta-col">
+                <div class="recipe-header-badges">
+                    <span class="category-tag tag-{{ recipe.category|lower }}">{{ recipe.category }}</span>
+                    <span class="difficulty-badge difficulty-{{ recipe.difficulty|lower }}">{{ recipe.difficulty }}</span>
+                </div>
+                <h1 class="recipe-title-main">{{ recipe.title }}</h1>
+                <div class="recipe-meta-row">
+                    <span class="meta-item">🌍 <strong>{{ recipe.cuisine }}</strong> Cuisine</span>
+                    <span class="meta-separator">&bull;</span>
+                    <span class="meta-item">⏱️ <strong>{{ recipe.prep_time }}</strong> minutes prep</span>
+                    <span class="meta-separator">&bull;</span>
+                    <span class="meta-item">📅 {{ recipe.created_at|format_date }}</span>
+                </div>
 
-        <!-- Like / Favorite Button -->
-        <div class="recipe-like-action-bar">
-            <button
-                type="button"
-                id="btn-like-recipe"
-                class="btn-like"
-                data-recipe-id="{{ recipe.id }}"
-                aria-label="Like this recipe"
-            >
-                <span class="like-heart-icon" id="like-icon">🤍</span>
-                <span class="like-text" id="like-status-text">Like</span>
-                <span class="like-count-badge" id="like-count-badge">{{ recipe.likes }}</span>
-            </button>
-            <span class="like-hint-text" id="like-hint">Click to like this recipe</span>
+                <!-- Like / Favorite Button -->
+                <div class="recipe-like-action-bar">
+                    <button
+                        type="button"
+                        id="btn-like-recipe"
+                        class="btn-like"
+                        data-recipe-id="{{ recipe.id }}"
+                        aria-label="Like this recipe"
+                    >
+                        <span class="like-heart-icon" id="like-icon">🤍</span>
+                        <span class="like-text" id="like-status-text">Like</span>
+                        <span class="like-count-badge" id="like-count-badge">{{ recipe.likes }}</span>
+                    </button>
+                    <span class="like-hint-text" id="like-hint">Click to like this recipe</span>
+                </div>
+            </div>
+            <div class="recipe-detail-image-col">
+                <img src="{{ recipe|recipe_image }}" alt="{{ recipe.title }}" class="recipe-hero-dish-img">
+            </div>
         </div>
     </div>
 
@@ -46,15 +53,6 @@
                 <span class="checklist-progress-badge" id="checklist-progress">0 of {{ ingredients|length }} ready</span>
             </div>
             <p class="section-hint">Tick ingredients as you prep your kitchen:</p>
-
-            <!-- Ingredients Visual Showcase -->
-            <div class="ingredients-showcase-strip" aria-label="Ingredient photo previews">
-                {% for ing in ingredients %}
-                <div class="showcase-item" title="{{ ing.name }}">
-                    <img src="{{ ing.name|ingredient_image }}" alt="{{ ing.name }}" loading="lazy">
-                </div>
-                {% endfor %}
-            </div>
 
             <div class="ingredients-checklist" id="ingredients-checklist">
                 {% for ing in ingredients %}

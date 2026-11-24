@@ -88,6 +88,35 @@ def ingredient_image_filter(val: Any) -> str:
     return resolve_ingredient_image(str(val))
 
 
+def resolve_recipe_image(recipe_id: int, category: str = "Lunch") -> str:
+    """Return URL for a unique, dedicated recipe dish photo."""
+    recipe_img = f"recipes/recipe_{recipe_id}.jpg"
+    full_path = os.path.join(app.static_folder, "images", recipe_img)
+    if os.path.exists(full_path):
+        return f"/static/images/{recipe_img}"
+    cat_lower = (category or "").lower()
+    if cat_lower == "breakfast":
+        return "/static/images/recipes/recipe_1.jpg"
+    elif cat_lower == "dessert":
+        return "/static/images/recipes/recipe_11.jpg"
+    elif cat_lower == "vegan":
+        return "/static/images/recipes/recipe_16.jpg"
+    return "/static/images/recipes/recipe_7.jpg"
+
+
+@app.template_filter("recipe_image")
+def recipe_image_filter(val: Any) -> str:
+    """Jinja filter to get dedicated recipe dish image URL."""
+    if isinstance(val, dict):
+        return resolve_recipe_image(val.get("id", 1), val.get("category", "Lunch"))
+    elif hasattr(val, "__getitem__"):
+        try:
+            return resolve_recipe_image(val["id"], val["category"])
+        except Exception:
+            pass
+    return "/static/images/recipes/recipe_1.jpg"
+
+
 # -----------------------------------------------------------------------------
 # Web Page Views
 # -----------------------------------------------------------------------------
@@ -220,7 +249,7 @@ def api_get_recipes():
             "difficulty": r["difficulty"],
             "likes": r["likes"],
             "created_at": created_str,
-            "image": resolve_ingredient_image(primary_ing),
+            "image": resolve_recipe_image(r["id"], r["category"]),
         })
 
     return jsonify(result), 200
@@ -266,6 +295,7 @@ def api_get_recipe(recipe_id: int):
         "difficulty": recipe["difficulty"],
         "likes": recipe["likes"],
         "created_at": created_str,
+        "image": resolve_recipe_image(recipe["id"], recipe["category"]),
         "ingredients": [
             {
                 "id": ing["id"],

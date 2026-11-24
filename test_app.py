@@ -42,12 +42,12 @@ class TestCommunityRecipePlatform(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         data = res.get_json()
         self.assertIsInstance(data, list)
-        self.assertGreaterEqual(len(data), 8)
+        self.assertEqual(len(data), 20)
         first = data[0]
         self.assertIn("title", first)
         self.assertIn("category", first)
         self.assertIn("image", first)
-        self.assertTrue(first["image"].startswith("/static/images/ingredients/"))
+        self.assertTrue(first["image"].startswith("/static/images/recipes/"))
 
     def test_search_and_category_filter(self):
         # Search by ingredient "avocado"
