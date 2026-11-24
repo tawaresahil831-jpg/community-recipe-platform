@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Recipes - Community Recipe Platform{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Discover &amp; Share Everyday Recipes</h1>
+        <p class="hero-subtitle">Explore crowd-sourced recipes, filter by category or dietary choice, and search by title, cuisine, or ingredients.</p>
+    </div>
+    <div class="hero-actions">
+        <a href="{{ url_for('create_recipe_page') }}" class="btn btn-primary btn-lg">+ Share Your Recipe</a>
+    </div>
+</div>
+
+<!-- Controls: Search Bar & Category Filter Chips -->
+<div class="controls-panel card">
+    <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input
+            type="text"
+            id="recipe-search-input"
+            class="form-control search-input"
+            placeholder="Search by title, ingredient (e.g. avocado, chicken), or cuisine (e.g. Italian)..."
+            autocomplete="off"
+            aria-label="Search recipes"
+        >
+        <button type="button" id="btn-clear-search" class="btn-clear" style="display: none;" title="Clear search">&times;</button>
+    </div>
+
+    <div class="category-chips-container" role="tablist" aria-label="Filter by category">
+        <button type="button" class="category-chip active" data-category="all" role="tab" aria-selected="true">
+            🍽️ All Recipes
+        </button>
+        <button type="button" class="category-chip tag-breakfast" data-category="Breakfast" role="tab" aria-selected="false">
+            🥞 Breakfast
+        </button>
+        <button type="button" class="category-chip tag-lunch" data-category="Lunch" role="tab" aria-selected="false">
+            🥗 Lunch
+        </button>
+        <button type="button" class="category-chip tag-dessert" data-category="Dessert" role="tab" aria-selected="false">
+            🍰 Dessert
+        </button>
+        <button type="button" class="category-chip tag-vegan" data-category="Vegan" role="tab" aria-selected="false">
+            🌱 Vegan
+        </button>
+    </div>
+</div>
+
+<div class="feed-section">
+    <div class="feed-header">
+        <h2 class="feed-title">
+            <span id="feed-heading-text">All Recipes</span>
+            <span class="badge" id="recipe-count-badge">{{ recipes|length }}</span>
+        </h2>
+        <div id="search-status-spinner" class="search-spinner" style="display: none;"></div>
+    </div>
+
+    <!-- Dynamic Recipe Grid -->
+    <div id="recipe-grid" class="recipe-grid">
+        {% for recipe in recipes %}
+        <div class="recipe-card" data-recipe-id="{{ recipe.id }}">
+            <div class="recipe-card-header">
+                <span class="category-tag tag-{{ recipe.category|lower }}">{{ recipe.category }}</span>
+                <span class="difficulty-badge difficulty-{{ recipe.difficulty|lower }}">{{ recipe.difficulty }}</span>
+            </div>
+            <h3 class="recipe-card-title">
+                <a href="{{ url_for('recipe_page', recipe_id=recipe.id) }}">{{ recipe.title }}</a>
+            </h3>
+            <div class="recipe-card-meta">
+                <span class="meta-item">🌍 {{ recipe.cuisine }}</span>
+                <span class="meta-separator">&bull;</span>
+                <span class="meta-item">⏱️ {{ recipe.prep_time }} mins</span>
+            </div>
+            <div class="recipe-card-footer">
+                <span class="card-likes-count">❤️ <strong>{{ recipe.likes }}</strong> like{{ 's' if recipe.likes != 1 else '' }}</span>
+                <a href="{{ url_for('recipe_page', recipe_id=recipe.id) }}" class="btn btn-secondary btn-sm">
+                    View Recipe &rarr;
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="empty-state" style="display: {% if recipes %}none{% else %}block{% endif %};">
+        <div class="empty-icon">🍳</div>
+        <h3>No recipes match your search</h3>
+        <p>Try searching for a different ingredient, cuisine, or category.</p>
+        <button type="button" id="btn-reset-filters" class="btn btn-outline mt-3">Reset All Filters</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        initExploreFeed();
+    });
+</script>
+{% endblock %}

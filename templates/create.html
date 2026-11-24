@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Share a Recipe - Community Recipe Platform{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h1 class="form-title">Share Your Recipe</h1>
+            <p class="form-subtitle">Contribute your favorite home recipe with ingredients and preparation steps.</p>
+        </div>
+
+        <form id="create-recipe-form" novalidate>
+            <!-- 1. Recipe Title -->
+            <div class="form-group">
+                <div class="form-label-row">
+                    <label for="recipe-title-input" class="form-label">Recipe Title <span class="required">*</span></label>
+                    <span class="char-counter" id="title-char-counter">0 / 120</span>
+                </div>
+                <input
+                    type="text"
+                    id="recipe-title-input"
+                    class="form-control"
+                    placeholder="e.g. Homemade Sourdough Margherita Pizza"
+                    maxlength="120"
+                    required
+                    autocomplete="off"
+                >
+                <div class="field-error" id="title-error"></div>
+            </div>
+
+            <!-- 2. Grid: Cuisine & Category -->
+            <div class="form-row">
+                <div class="form-group col-half">
+                    <label for="recipe-cuisine-input" class="form-label">Cuisine Type <span class="required">*</span></label>
+                    <input
+                        type="text"
+                        id="recipe-cuisine-input"
+                        class="form-control"
+                        placeholder="e.g. Italian, Mexican, Thai"
+                        maxlength="100"
+                        required
+                        autocomplete="off"
+                    >
+                    <div class="field-error" id="cuisine-error"></div>
+                </div>
+
+                <div class="form-group col-half">
+                    <label for="recipe-category-select" class="form-label">Category <span class="required">*</span></label>
+                    <select id="recipe-category-select" class="form-control" required>
+                        <option value="" disabled selected>Select category...</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat }}">{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="field-error" id="category-error"></div>
+                </div>
+            </div>
+
+            <!-- 3. Grid: Prep Time & Difficulty -->
+            <div class="form-row">
+                <div class="form-group col-half">
+                    <label for="recipe-prep-time-input" class="form-label">Prep Time (minutes) <span class="required">*</span></label>
+                    <input
+                        type="number"
+                        id="recipe-prep-time-input"
+                        class="form-control"
+                        placeholder="e.g. 25"
+                        min="1"
+                        max="1440"
+                        required
+                    >
+                    <div class="field-error" id="prep-time-error"></div>
+                </div>
+
+                <div class="form-group col-half">
+                    <label for="recipe-difficulty-select" class="form-label">Difficulty Level <span class="required">*</span></label>
+                    <select id="recipe-difficulty-select" class="form-control" required>
+                        <option value="" disabled selected>Select difficulty...</option>
+                        {% for diff in difficulties %}
+                        <option value="{{ diff }}">{{ diff }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="field-error" id="difficulty-error"></div>
+                </div>
+            </div>
+
+            <hr class="form-divider">
+
+            <!-- 4. Ingredients Builder -->
+            <div class="form-group">
+                <div class="form-label-row">
+                    <label class="form-label">Ingredients <span class="required">*</span></label>
+                    <span class="items-counter" id="ingredients-counter">2 items</span>
+                </div>
+                <p class="form-hint">List ingredients with quantities (e.g. "2 cups all-purpose flour", "1 tbsp olive oil").</p>
+
+                <div id="ingredients-list" class="dynamic-list">
+                    <div class="dynamic-row" data-index="0">
+                        <span class="row-num">1</span>
+                        <input
+                            type="text"
+                            class="form-control dynamic-input ingredient-input"
+                            placeholder="e.g. 2 cups all-purpose flour"
+                            maxlength="200"
+                            required
+                        >
+                        <button type="button" class="btn-icon btn-remove-row" title="Remove ingredient" disabled aria-label="Remove ingredient 1">&times;</button>
+                    </div>
+                    <div class="dynamic-row" data-index="1">
+                        <span class="row-num">2</span>
+                        <input
+                            type="text"
+                            class="form-control dynamic-input ingredient-input"
+                            placeholder="e.g. 1 tbsp olive oil"
+                            maxlength="200"
+                            required
+                        >
+                        <button type="button" class="btn-icon btn-remove-row" title="Remove ingredient" disabled aria-label="Remove ingredient 2">&times;</button>
+                    </div>
+                </div>
+                <button type="button" id="btn-add-ingredient" class="btn btn-outline btn-sm mt-2">+ Add Another Ingredient</button>
+                <div class="field-error" id="ingredients-error"></div>
+            </div>
+
+            <hr class="form-divider">
+
+            <!-- 5. Ordered Steps Builder -->
+            <div class="form-group">
+                <div class="form-label-row">
+                    <label class="form-label">Preparation Steps <span class="required">*</span></label>
+                    <span class="items-counter" id="steps-counter">2 steps</span>
+                </div>
+                <p class="form-hint">Add numbered instructions in the order they should be performed.</p>
+
+                <div id="steps-list" class="dynamic-list">
+                    <div class="dynamic-row" data-index="0">
+                        <span class="row-num step-num">Step 1</span>
+                        <textarea
+                            class="form-control dynamic-input step-input"
+                            rows="2"
+                            placeholder="e.g. Preheat the oven to 200°C (400°F) and grease a baking dish."
+                            maxlength="200"
+                            required
+                        ></textarea>
+                        <button type="button" class="btn-icon btn-remove-row" title="Remove step" disabled aria-label="Remove step 1">&times;</button>
+                    </div>
+                    <div class="dynamic-row" data-index="1">
+                        <span class="row-num step-num">Step 2</span>
+                        <textarea
+                            class="form-control dynamic-input step-input"
+                            rows="2"
+                            placeholder="e.g. In a large bowl, whisk together the dry ingredients."
+                            maxlength="200"
+                            required
+                        ></textarea>
+                        <button type="button" class="btn-icon btn-remove-row" title="Remove step" disabled aria-label="Remove step 2">&times;</button>
+                    </div>
+                </div>
+                <button type="button" id="btn-add-step" class="btn btn-outline btn-sm mt-2">+ Add Another Step</button>
+                <div class="field-error" id="steps-error"></div>
+            </div>
+
+            <div id="form-error-banner" class="alert alert-error" style="display: none;"></div>
+
+            <div class="form-actions">
+                <a href="{{ url_for('index') }}" class="btn btn-text">Cancel</a>
+                <button type="submit" id="btn-submit-recipe" class="btn btn-primary">
+                    <span class="btn-text-content">Publish Recipe</span>
+                    <span class="btn-spinner" style="display: none;"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        initCreateRecipeForm();
+    });
+</script>
+{% endblock %}

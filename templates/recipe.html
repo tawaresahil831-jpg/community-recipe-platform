@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}{{ recipe.title }} - Community Recipe Platform{% endblock %}
+
+{% block content %}
+<div class="recipe-detail-wrapper" data-recipe-id="{{ recipe.id }}">
+    <!-- Header Card -->
+    <div class="recipe-header-card">
+        <a href="{{ url_for('index') }}" class="back-link">&larr; Back to all recipes</a>
+        <div class="recipe-header-badges">
+            <span class="category-tag tag-{{ recipe.category|lower }}">{{ recipe.category }}</span>
+            <span class="difficulty-badge difficulty-{{ recipe.difficulty|lower }}">{{ recipe.difficulty }}</span>
+        </div>
+        <h1 class="recipe-title-main">{{ recipe.title }}</h1>
+        <div class="recipe-meta-row">
+            <span class="meta-item">🌍 <strong>{{ recipe.cuisine }}</strong> Cuisine</span>
+            <span class="meta-separator">&bull;</span>
+            <span class="meta-item">⏱️ <strong>{{ recipe.prep_time }}</strong> minutes prep</span>
+            <span class="meta-separator">&bull;</span>
+            <span class="meta-item">📅 {{ recipe.created_at|format_date }}</span>
+        </div>
+
+        <!-- Like / Favorite Button -->
+        <div class="recipe-like-action-bar">
+            <button
+                type="button"
+                id="btn-like-recipe"
+                class="btn-like"
+                data-recipe-id="{{ recipe.id }}"
+                aria-label="Like this recipe"
+            >
+                <span class="like-heart-icon" id="like-icon">🤍</span>
+                <span class="like-text" id="like-status-text">Like</span>
+                <span class="like-count-badge" id="like-count-badge">{{ recipe.likes }}</span>
+            </button>
+            <span class="like-hint-text" id="like-hint">Click to like this recipe</span>
+        </div>
+    </div>
+
+    <!-- Two-Column Layout for Desktop, Stacked on Mobile -->
+    <div class="recipe-body-grid">
+        <!-- Left: Interactive Ingredient Checklist -->
+        <div class="recipe-sidebar card">
+            <div class="section-title-row">
+                <h2 class="card-section-title">Ingredients</h2>
+                <span class="checklist-progress-badge" id="checklist-progress">0 of {{ ingredients|length }} ready</span>
+            </div>
+            <p class="section-hint">Tick ingredients as you prep your kitchen:</p>
+
+            <div class="ingredients-checklist" id="ingredients-checklist">
+                {% for ing in ingredients %}
+                <label class="checklist-item" for="ing-{{ ing.id }}">
+                    <input
+                        type="checkbox"
+                        id="ing-{{ ing.id }}"
+                        class="checklist-checkbox"
+                        data-ing-id="{{ ing.id }}"
+                    >
+                    <span class="checkbox-custom"></span>
+                    <span class="checklist-label">{{ ing.name }}</span>
+                </label>
+                {% endfor %}
+            </div>
+
+            <div class="checklist-actions">
+                <button type="button" id="btn-reset-checklist" class="btn btn-text btn-sm">Reset Checklist</button>
+            </div>
+        </div>
+
+        <!-- Right: Ordered Preparation Steps -->
+        <div class="recipe-main card">
+            <h2 class="card-section-title">Preparation Steps</h2>
+            <p class="section-hint">Follow the recipe step by step:</p>
+
+            <ol class="steps-ordered-list">
+                {% for step in steps %}
+                <li class="step-card-item">
+                    <div class="step-badge">Step {{ step.position + 1 }}</div>
+                    <div class="step-text">{{ step.instruction }}</div>
+                </li>
+                {% endfor %}
+            </ol>
+
+            <div class="recipe-footer-card">
+                <div class="recipe-footer-left">
+                    <p>Enjoyed cooking this? Let the community know!</p>
+                </div>
+                <a href="{{ url_for('create_recipe_page') }}" class="btn btn-outline btn-sm">+ Share Your Own Recipe</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        initRecipeDetailPage({{ recipe.id }});
+    });
+</script>
+{% endblock %}
