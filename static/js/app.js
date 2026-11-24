@@ -95,6 +95,21 @@ function initExploreFeed() {
             card.className = "recipe-card";
             card.setAttribute("data-recipe-id", recipe.id);
 
+            // Cover Image
+            if (recipe.image) {
+                const cover = document.createElement("div");
+                cover.className = "recipe-card-cover";
+                const img = document.createElement("img");
+                img.src = recipe.image;
+                img.alt = recipe.title;
+                img.loading = "lazy";
+                cover.appendChild(img);
+                card.appendChild(cover);
+            }
+
+            const body = document.createElement("div");
+            body.className = "recipe-card-body";
+
             // 1. Header (Category tag + Difficulty badge)
             const header = document.createElement("div");
             header.className = "recipe-card-header";
@@ -154,12 +169,13 @@ function initExploreFeed() {
             footer.appendChild(likesSpan);
             footer.appendChild(viewBtn);
 
-            // Assemble card
-            card.appendChild(header);
-            card.appendChild(titleH3);
-            card.appendChild(meta);
-            card.appendChild(footer);
+            // Assemble card body and card
+            body.appendChild(header);
+            body.appendChild(titleH3);
+            body.appendChild(meta);
+            body.appendChild(footer);
 
+            card.appendChild(body);
             recipeGrid.appendChild(card);
         });
     }

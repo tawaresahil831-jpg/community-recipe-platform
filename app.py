@@ -44,6 +44,50 @@ def format_date_filter(val: Any) -> str:
     return str(val)[:10]
 
 
+INGREDIENT_IMAGE_MAPPINGS = [
+    (("avocado",), "avocado.jpg"),
+    (("egg", "yolk"), "egg.jpg"),
+    (("bread", "toast", "ladyfinger", "sourdough"), "bread.jpg"),
+    (("olive oil", "oil", "vinegar"), "olive_oil.jpg"),
+    (("blueberry", "blueberries", "berry", "berries"), "blueberries.jpg"),
+    (("flour", "baking powder", "baking soda", "cornstarch"), "flour.jpg"),
+    (("butter", "buttermilk", "cream", "milk"), "butter.jpg"),
+    (("syrup", "sugar"), "syrup.jpg"),
+    (("quinoa", "rice"), "quinoa.jpg"),
+    (("tomato", "puree"), "tomatoes.jpg"),
+    (("cucumber",), "cucumber.jpg"),
+    (("olive", "olives"), "olives.jpg"),
+    (("cheese", "mozzarella", "feta", "parmesan", "mascarpone"), "cheese.jpg"),
+    (("chickpea", "chickpeas", "bean", "beans"), "chickpeas.jpg"),
+    (("garlic", "onion", "ginger"), "garlic.jpg"),
+    (("basil", "spinach", "herb", "parsley", "nori", "cilantro", "oregano"), "herbs.jpg"),
+    (("chicken", "pork", "steak", "meat", "chashu"), "chicken.jpg"),
+    (("pasta", "fettuccine", "noodle", "noodles", "spaghetti", "penne"), "pasta.jpg"),
+    (("chocolate", "cocoa"), "chocolate.jpg"),
+    (("coffee", "espresso", "liqueur"), "coffee.jpg"),
+    (("coconut",), "coconut.jpg"),
+    (("bell pepper", "pepper"), "bell_pepper.jpg"),
+    (("lemon", "lime"), "lemon.jpg"),
+    (("tofu",), "tofu.jpg"),
+    (("salt", "spice", "spices", "seasoning", "flakes"), "spices.jpg"),
+]
+
+
+def resolve_ingredient_image(name: str) -> str:
+    """Return URL for a delicious ingredient image based on keywords."""
+    name_lower = name.lower()
+    for keywords, filename in INGREDIENT_IMAGE_MAPPINGS:
+        if any(kw in name_lower for kw in keywords):
+            return f"/static/images/ingredients/{filename}"
+    return "/static/images/ingredients/default_food.jpg"
+
+
+@app.template_filter("ingredient_image")
+def ingredient_image_filter(val: Any) -> str:
+    """Jinja filter to get ingredient image URL."""
+    return resolve_ingredient_image(str(val))
+
+
 # -----------------------------------------------------------------------------
 # Web Page Views
 # -----------------------------------------------------------------------------
@@ -54,9 +98,10 @@ def index():
     db = get_db()
     recipes = db.execute(
         """
-        SELECT id, title, cuisine, category, prep_time, difficulty, likes, created_at
-        FROM recipes
-        ORDER BY created_at DESC, id DESC
+        SELECT r.id, r.title, r.cuisine, r.category, r.prep_time, r.difficulty, r.likes, r.created_at,
+               (SELECT name FROM ingredients WHERE recipe_id = r.id ORDER BY position ASC LIMIT 1) AS primary_ingredient
+        FROM recipes r
+        ORDER BY r.created_at DESC, r.id DESC
         """
     ).fetchall()
     return render_template("index.html", recipes=recipes, categories=ALLOWED_CATEGORIES)
@@ -149,7 +194,8 @@ def api_get_recipes():
     where_clause = f"WHERE {' AND '.join(conditions)}" if conditions else ""
 
     query = f"""
-        SELECT r.id, r.title, r.cuisine, r.category, r.prep_time, r.difficulty, r.likes, r.created_at
+        SELECT r.id, r.title, r.cuisine, r.category, r.prep_time, r.difficulty, r.likes, r.created_at,
+               (SELECT name FROM ingredients WHERE recipe_id = r.id ORDER BY position ASC LIMIT 1) AS primary_ingredient
         FROM recipes r
         {where_clause}
         ORDER BY r.created_at DESC, r.id DESC
@@ -164,6 +210,7 @@ def api_get_recipes():
             if hasattr(r["created_at"], "isoformat")
             else str(r["created_at"])
         )
+        primary_ing = r["primary_ingredient"] or r["title"]
         result.append({
             "id": r["id"],
             "title": r["title"],
@@ -173,6 +220,7 @@ def api_get_recipes():
             "difficulty": r["difficulty"],
             "likes": r["likes"],
             "created_at": created_str,
+            "image": resolve_ingredient_image(primary_ing),
         })
 
     return jsonify(result), 200
@@ -219,7 +267,12 @@ def api_get_recipe(recipe_id: int):
         "likes": recipe["likes"],
         "created_at": created_str,
         "ingredients": [
-            {"id": ing["id"], "name": ing["name"], "position": ing["position"]}
+            {
+                "id": ing["id"],
+                "name": ing["name"],
+                "position": ing["position"],
+                "image": resolve_ingredient_image(ing["name"]),
+            }
             for ing in ingredients_rows
         ],
         "steps": [

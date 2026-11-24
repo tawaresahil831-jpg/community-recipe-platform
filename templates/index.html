@@ -60,23 +60,28 @@
     <div id="recipe-grid" class="recipe-grid">
         {% for recipe in recipes %}
         <div class="recipe-card" data-recipe-id="{{ recipe.id }}">
-            <div class="recipe-card-header">
-                <span class="category-tag tag-{{ recipe.category|lower }}">{{ recipe.category }}</span>
-                <span class="difficulty-badge difficulty-{{ recipe.difficulty|lower }}">{{ recipe.difficulty }}</span>
+            <div class="recipe-card-cover">
+                <img src="{{ (recipe.primary_ingredient or recipe.title)|ingredient_image }}" alt="{{ recipe.title }}" loading="lazy">
             </div>
-            <h3 class="recipe-card-title">
-                <a href="{{ url_for('recipe_page', recipe_id=recipe.id) }}">{{ recipe.title }}</a>
-            </h3>
-            <div class="recipe-card-meta">
-                <span class="meta-item">🌍 {{ recipe.cuisine }}</span>
-                <span class="meta-separator">&bull;</span>
-                <span class="meta-item">⏱️ {{ recipe.prep_time }} mins</span>
-            </div>
-            <div class="recipe-card-footer">
-                <span class="card-likes-count">❤️ <strong>{{ recipe.likes }}</strong> like{{ 's' if recipe.likes != 1 else '' }}</span>
-                <a href="{{ url_for('recipe_page', recipe_id=recipe.id) }}" class="btn btn-secondary btn-sm">
-                    View Recipe &rarr;
-                </a>
+            <div class="recipe-card-body">
+                <div class="recipe-card-header">
+                    <span class="category-tag tag-{{ recipe.category|lower }}">{{ recipe.category }}</span>
+                    <span class="difficulty-badge difficulty-{{ recipe.difficulty|lower }}">{{ recipe.difficulty }}</span>
+                </div>
+                <h3 class="recipe-card-title">
+                    <a href="{{ url_for('recipe_page', recipe_id=recipe.id) }}">{{ recipe.title }}</a>
+                </h3>
+                <div class="recipe-card-meta">
+                    <span class="meta-item">🌍 {{ recipe.cuisine }}</span>
+                    <span class="meta-separator">&bull;</span>
+                    <span class="meta-item">⏱️ {{ recipe.prep_time }} mins</span>
+                </div>
+                <div class="recipe-card-footer">
+                    <span class="card-likes-count">❤️ <strong>{{ recipe.likes }}</strong> like{{ 's' if recipe.likes != 1 else '' }}</span>
+                    <a href="{{ url_for('recipe_page', recipe_id=recipe.id) }}" class="btn btn-secondary btn-sm">
+                        View Recipe &rarr;
+                    </a>
+                </div>
             </div>
         </div>
         {% endfor %}

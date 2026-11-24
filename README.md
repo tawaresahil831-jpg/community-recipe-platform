@@ -27,11 +27,11 @@ Built strictly with 100% free, standard tools: Python 3.9, Flask, built-in SQLit
 
 ## Key Features
 
-- **Explore Feed & Recipe Grid**: Responsive card grid showcasing recipe title, color-coded category tags, cuisine origin, preparation time, difficulty badges, and community like counters.
+- **Explore Feed & Recipe Grid with Cover Photos**: Responsive card grid showcasing appetizing recipe cover banners, color-coded category tags, cuisine origin, preparation time, difficulty badges, and community like counters.
 - **Instant Category Filtering**: Filter recipes on the fly across **All**, **Breakfast**, **Lunch**, **Dessert**, and **Vegan** using chips without a page reload.
 - **Reactive Debounced Search**: 300ms debounced search bar dynamically querying across recipe titles, cuisine types, and ingredient keywords simultaneously via `fetch()`. Category filtering and keyword search work seamlessly together.
 - **Dynamic Recipe Publishing**: Interactive form allowing creators to input recipe details and dynamically add or remove ingredient rows and ordered preparation steps with front-end validation. Wrapped in an atomic SQLite transaction on the server.
-- **Interactive Ingredient Checklist**: Dynamic checklist on the recipe detail page allowing cooks to tick off ingredients as they prep. Includes a real-time progress counter (*"3 of 8 ready"*) and strikethrough styling saved in the browser session.
+- **Interactive Ingredient Checklist with Delicious Visuals**: Dynamic checklist on the recipe detail page featuring high-definition ingredient photo thumbnails and an ingredient showcase gallery. Allows cooks to tick off ingredients as they prep, with a real-time progress counter (*"3 of 8 ready"*), visual dimming, and session-stored checked states.
 - **Persistent Like Counter**: Like/favorite heart button with instant optimistic UI feedback. Uses `localStorage` to prevent duplicate likes from the same browser while allowing users to toggle their like status back to unlike. The backend atomically updates SQLite counts and guarantees likes never drop below zero.
 - **XSS-Safe & Accessible Design**: All user data is rendered securely via `textContent` and escaped template variables to prevent cross-site scripting. Uses non-blocking toast notifications (no browser `alert()`).
 - **Mobile-First Responsive Layout**: Engineered with CSS flexbox and grid, tested and verified on 360px mobile viewports through large desktop screens.
@@ -58,6 +58,7 @@ community-recipe-platform/
 ├── db.py                  # SQLite connection helper, foreign key enforcer, init helpers
 ├── schema.sql             # Relational table definitions, foreign keys, cascade deletes, indexes
 ├── seed.py                # Idempotent seed script inserting 9 authentic sample recipes
+├── test_app.py            # Automated unittest suite covering API, validation & transactions
 ├── capture_and_verify.py  # Automated Playwright test and screenshot capture script
 ├── requirements.txt       # Pinned production dependencies (Flask, python-dotenv, gunicorn)
 ├── Procfile               # Deployment entrypoint (web: gunicorn app:app)
@@ -68,8 +69,10 @@ community-recipe-platform/
 ├── static/
 │   ├── css/
 │   │   └── style.css      # Mobile-first CSS, custom variables, category color themes
-│   └── js/
-│       └── app.js         # Debounced search (300ms), category filter, checklist counter, like toggle
+│   ├── js/
+│   │   └── app.js         # Debounced search (300ms), category filter, checklist counter, like toggle
+│   └── images/
+│       └── ingredients/   # High-resolution ingredient visuals (avocado, pasta, egg, etc.)
 ├── templates/
 │   ├── base.html          # Shared layout, navbar ("Explore", "Share a Recipe"), toast container
 │   ├── index.html         # Explore feed, category filter chips, live search bar, recipe grid
@@ -217,6 +220,11 @@ All API routes return JSON and are grouped under `/api`.
 
 7. **Open in browser**:
    Navigate to [http://127.0.0.1:5000](http://127.0.0.1:5000)
+
+8. **Run automated test suite (optional)**:
+   ```bash
+   python test_app.py
+   ```
 
 ---
 

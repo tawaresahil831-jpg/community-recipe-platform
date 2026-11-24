@@ -47,6 +47,15 @@
             </div>
             <p class="section-hint">Tick ingredients as you prep your kitchen:</p>
 
+            <!-- Ingredients Visual Showcase -->
+            <div class="ingredients-showcase-strip" aria-label="Ingredient photo previews">
+                {% for ing in ingredients %}
+                <div class="showcase-item" title="{{ ing.name }}">
+                    <img src="{{ ing.name|ingredient_image }}" alt="{{ ing.name }}" loading="lazy">
+                </div>
+                {% endfor %}
+            </div>
+
             <div class="ingredients-checklist" id="ingredients-checklist">
                 {% for ing in ingredients %}
                 <label class="checklist-item" for="ing-{{ ing.id }}">
@@ -57,6 +66,7 @@
                         data-ing-id="{{ ing.id }}"
                     >
                     <span class="checkbox-custom"></span>
+                    <img src="{{ ing.name|ingredient_image }}" alt="{{ ing.name }}" class="ingredient-thumbnail" loading="lazy">
                     <span class="checklist-label">{{ ing.name }}</span>
                 </label>
                 {% endfor %}
